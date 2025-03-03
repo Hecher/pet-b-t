@@ -12,7 +12,7 @@ import { ExternalContextCreator } from '@nestjs/core';
 export class ImageService {
   constructor(private readonly httpService: HttpService) {}
 
-  async processImage(file: Multer.File): Promise<string> {
+  async processImage(file: Express.Multer.File): Promise<string> {
     const formData = new FormData();
     formData.append('file', Readable.from(file.buffer), {
       filename: file.originalname,
@@ -40,6 +40,9 @@ export class ImageService {
       throw new Error('Ошибка при обработке изображения');
     }
   }
+  
+
+  
 
   // async processBase64Image(base64: string): Promise<string> {
   //   const buffer = Buffer.from(base64, 'base64');
