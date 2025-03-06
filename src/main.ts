@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { mkdirSync } from 'fs';
 
+try {
+  mkdirSync('./uploads');
+} catch (error) {}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://localhost:8081', // Разрешить запросы с вашего React Native приложения
+    origin: '*', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true, 
   });
-  app.enableCors('*');
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
