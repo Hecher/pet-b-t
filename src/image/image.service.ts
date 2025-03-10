@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { DatabaseService } from '../database/database.service';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { Multer } from 'multer';
@@ -10,7 +11,10 @@ import { ExternalContextCreator } from '@nestjs/core';
 
 @Injectable()
 export class ImageService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly databaseService: DatabaseService,
+  ) {}
 
   async processImage(file: Express.Multer.File): Promise<string> {
     const formData = new FormData();
@@ -28,7 +32,8 @@ export class ImageService {
         },
       });
       if (response.status === 200) {
-        return response.data.prediction;
+        const word = await this.databaseService.findWordByNumber(response.data.prediction);
+        return word;
       }
       else {
         throw new InternalServerErrorException('блядь я опять насрал себе в шорты');
