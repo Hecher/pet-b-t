@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {Mapping} from '../entities/mapping.entities'
 import { DatabaseService } from './database.service';
+import { DatabaseController } from './database.controller';
+import { User } from 'src/entities/user.entities';
 
 @Module({
     imports: [
@@ -12,12 +14,13 @@ import { DatabaseService } from './database.service';
             username: 'postgres',
             password: 'postgres',
             database: 'image_mapping',
-            entities: [Mapping],
+            entities: [Mapping, User],
             synchronize: true,
         }),
-        TypeOrmModule.forFeature([Mapping])
+        TypeOrmModule.forFeature([Mapping, User])
     ],
     exports: [TypeOrmModule],
-    providers: [DatabaseService]
+    providers: [DatabaseService],
+    controllers: [DatabaseController]
 })
 export class DatabaseModule {}

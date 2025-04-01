@@ -26,7 +26,7 @@ export class ImageService {
     // console.log("Отправляемые заголовки:", formData.getHeaders()); 
   
     try {
-      const response = await axios.post('http://127.0.0.1:8000/predict/', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/detect-anomaly', formData, {
         headers: {
           ...formData.getHeaders(),
         },
